@@ -6,24 +6,17 @@ import java.util.Arrays;
 
 public class Utils {
 
-    boolean isValidName(String className) {
-        try
-        {
-            Class.forName(className);
-            return true;
-        }
-        catch(ClassNotFoundException ex)
-        {
+    boolean isNumberFrom1to100(String number) {
+        try {
+            Integer num = Integer.parseInt(number);
+            if(num>0 && num<=100){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
             return false;
         }
-    }
-
-
-    public String[] classMethods(String className) throws ClassNotFoundException {
-        Method[] methods=Class.forName(className).getMethods();
-        return Arrays.stream(methods)
-                .map(m->m.getName())
-                .toArray(String[]::new);
     }
 
 }

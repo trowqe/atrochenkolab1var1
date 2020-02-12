@@ -14,7 +14,7 @@
 
   <servlet-mapping>
     <servlet-name>simpleServlet</servlet-name>
-    <url-pattern>/lab1var12</url-pattern>
+    <url-pattern>/lab1var1</url-pattern>
   </servlet-mapping>
 
 </web-app>

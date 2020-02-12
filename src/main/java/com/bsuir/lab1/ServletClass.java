@@ -14,33 +14,64 @@ public class ServletClass extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        String classname = request.getParameter("class");
         PrintWriter out = response.getWriter();
+
+
+        String header = request.getParameter("header");
+        String rows = request.getParameter("rows");
+        String columns = request.getParameter("columns");
+        String color = request.getParameter("backgroundColor");
+
+        String columnsWeight = request.getParameter("columnsWeight");
+        String bordersWeight = request.getParameter("bordersWeight");
 
         out.println("<html>");
         out.println("<body>");
-        boolean valid = utils.isValidName(classname);
-        out.println(utils.isValidName(classname));
-        if (!valid) {
+
+        boolean validRows = utils.isNumberFrom1to100(rows);
+        out.println("validRows: "+ utils.isNumberFrom1to100(rows)+ " " + rows);
+        if (!validRows) {
             return;
         }
 
-        String arr[] = new String[0];
-        try {
-            arr = utils.classMethods(classname);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        boolean validColumns= utils.isNumberFrom1to100(rows);
+        out.println("validColumns: " + utils.isNumberFrom1to100(rows) + " " + columns);
+        if (!validColumns) {
+            return;
         }
-        out.println("<table border=\"1\" width=\"10%\" cellpadding=\"5\">");
-        for (String s : arr
-        ) {
-            out.println(printInCell(s));
+
+        boolean validColumnsWeight= utils.isNumberFrom1to100(columnsWeight);
+        out.println("validColumnsWight: " + utils.isNumberFrom1to100(columnsWeight)+ " " + columnsWeight);
+        if (!validColumnsWeight) {
+            return;
         }
-        out.println("</table>");
+
+        boolean validBordersWeight= utils.isNumberFrom1to100(bordersWeight);
+        out.println("validBordersWight: " + utils.isNumberFrom1to100(bordersWeight)+ " " + bordersWeight);
+        if (!validBordersWeight) {
+            return;
+        }
+
+        out.println("<h3>"+header+"</h3>");
+
+        generateTable(out, Integer.parseInt(rows), Integer.parseInt(columns), color, Integer.parseInt(columnsWeight), Integer.parseInt(bordersWeight));
+
         out.println("</body>");
         out.println("</html>");
 
 
+    }
+
+    private void generateTable(PrintWriter out, Integer rows, Integer columns, String color, Integer columnWeight, Integer bordersWeight){
+        out.println("<table style='width:"+columnWeight+"%"+";background-color:"+color+";border:"+bordersWeight+"px solid black'>");
+        for (int i=0; i < rows; i++) {
+            out.println("<tr>");
+            for (int j=0; j < columns; j++) {
+                out.println("<td>"+i+"/"+j+"</td>");
+            }
+            out.println("</tr>");
+        }
+        out.println("</table>");
     }
 
     @Override
@@ -51,9 +82,5 @@ public class ServletClass extends HttpServlet {
     @Override
     public void destroy() {
         System.out.println("Servlet " + this.getServletName() + " has stopped");
-    }
-
-    private String printInCell(String s) {
-        return "<tr><th>" + s + "</th></tr>";
     }
 }
